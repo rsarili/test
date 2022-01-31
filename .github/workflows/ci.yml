@@ -41,5 +41,5 @@ jobs:
 
       - name: Terraform Apply
         id: apply
-        run: terraform apply -var-file=./env/dev/dev.tfvars
+        run: terraform apply -auto-approve -var-file=./env/dev/dev.tfvars
 
