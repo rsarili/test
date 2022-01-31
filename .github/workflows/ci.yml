@@ -12,6 +12,10 @@ jobs:
       
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v1.2.1
+        with:
+          aws-region: eu-central-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform fmt
         id: fmt
@@ -21,15 +25,11 @@ jobs:
         id: init
         run: terraform init
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
+      - name: Terraform select workspace
+        id: workspace
+        run: terraform workspace select dev || terraform workspace new dev
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
-
-      - name: Terraform Plan
-        id: plan
-        run: terraform apply -no-color
+        run: terraform plan -var-file=./env/dev/dev.tfvars
 
